@@ -1,0 +1,24 @@
+[project]
+name = "solidsoftware-test"
+version = "0.1.0"
+description = "Python Flask API with SQLAlchemy"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "flask>=3.0,<4",
+    "flask-sqlalchemy>=3.1,<4",
+    "python-dotenv>=1.0,<2",
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.7.0",
+    "ruff>=0.17.2",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
