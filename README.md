@@ -22,13 +22,13 @@
 
 ```bash
 make setup   # install dependencies, create .env, install pre-commit hooks
-make run     # start postgres, redis, api, and worker
+make run     # start postgres and api
 ```
 
 Verify the API:
 
 ```bash
-curl http://localhost:5000/health
+curl http://localhost:8000/health
 # {"status":"ok"}
 ```
 
@@ -38,14 +38,12 @@ After `make setup`, [pre-commit](https://pre-commit.com/) runs automatically on 
 
 - Ruff (lint + format check)
 - mypy
-- pytest
 
 Run the same checks manually:
 
 ```bash
-make check        # lint + test (matches CI)
+make check        # lint (matches CI)
 make lint         # ruff + mypy only
-make test         # pytest (in-memory SQLite via test fixtures; no Docker required)
 make pre-commit   # all pre-commit hooks
 ```
 
@@ -61,27 +59,10 @@ GitHub Actions (`.github/workflows/ci.yml`) runs on push and pull requests to `m
 
 1. Ruff check and format check
 2. mypy
-3. pytest
 
 ## Services
 
 | Service | Port | Description |
 |---------|------|-------------|
-| `api` | 5000 | HTTP API |
+| `api` | 8000 | HTTP API |
 | `postgres` | 5432 | Persistent storage |
-
-## Project layout
-
-```
-app/
-  __init__.py       # application factory
-  config.py         # app config
-  extensions.py     # SQLAlchemy instance
-  models/           # ORM models
-  routes/           # blueprints / endpoints
-run.py              # entrypoint
-Dockerfile
-docker-compose.yml
-pyproject.toml
-uv.lock
-```
