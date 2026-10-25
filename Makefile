@@ -1,4 +1,4 @@
-.PHONY: setup run
+.PHONY: setup run migrate
 
 setup:
 	uv sync
@@ -7,3 +7,6 @@ setup:
 
 run:
 	docker compose up --build
+
+migrate:
+	uv run flask db upgrade

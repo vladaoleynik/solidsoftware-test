@@ -14,8 +14,12 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev --no-install-project
 
 COPY app ./app
+COPY db ./db
+COPY migrations ./migrations
 COPY run.py ./
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 EXPOSE 8000
 
-CMD ["flask", "run", "--host=0.0.0.0", "--port=8000"]
+ENTRYPOINT ["/entrypoint.sh"]

@@ -9,6 +9,7 @@ services:
       FLASK_APP: run.py
       SECRET_KEY: ${SECRET_KEY:-dev-secret-key}
       DATABASE_URL: postgresql+psycopg://payments:payments@postgres:5432/payments
+      SEED_DATA: "1"
     depends_on:
       postgres:
         condition: service_healthy

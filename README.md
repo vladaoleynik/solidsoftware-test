@@ -22,8 +22,10 @@
 
 ```bash
 make setup   # install dependencies, create .env, install pre-commit hooks
-make run     # start postgres and api
+make run     # start postgres and api (runs migrations, then loads db/seed.sql)
 ```
+
+Schema changes: update models, then `uv run flask db migrate -m "..."`, commit the new file under `migrations/versions/`, and restart (or `make migrate`).
 
 Verify the API:
 
