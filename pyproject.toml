@@ -7,11 +7,13 @@ requires-python = ">=3.14"
 dependencies = [
     "flask>=3.0,<4",
     "flask-sqlalchemy>=3.1,<4",
+    "psycopg[binary]>=3.2,<4",
     "python-dotenv>=1.0,<2",
 ]
 
 [dependency-groups]
 dev = [
+    "mypy>=2.4.0",
     "pre-commit>=4.7.0",
     "ruff>=0.17.2",
 ]
@@ -22,3 +24,9 @@ target-version = "py314"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.14"
+files = ["app", "run.py"]
+strict = true
+warn_unused_configs = true

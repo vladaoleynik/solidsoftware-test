@@ -1,8 +1,8 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, Response, jsonify
 
 main_bp = Blueprint("main", __name__)
 
 
 @main_bp.get("/")
-def index():
+def index() -> Response:
     return jsonify({"status": "ok", "message": "Flask + SQLAlchemy is running"})

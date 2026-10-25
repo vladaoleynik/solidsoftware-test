@@ -1,32 +1,74 @@
-# solidsoftware-test
+# Solid Software Test Task
 
-Python Flask API with SQLAlchemy.
+## Stack
 
-## Setup
+| Component | Choice                                |
+|-----------|---------------------------------------|
+| API | Flask                 |
+| Database | PostgreSQL                            |
+| ORM | SQLAlchemy                        |
+| Dependencies | [uv](https://docs.astral.sh/uv/)      |
+| Orchestration | Docker Compose                        |
+| Lint / format | [Ruff](https://docs.astral.sh/ruff/)  |
+| Type checking | [mypy](https://mypy-lang.org/)        |
+| Git hooks | [pre-commit](https://pre-commit.com/) |
+
+## Prerequisites
+
+- [Docker](https://docs.docker.com/get-docker/) and Docker Compose
+- [uv](https://docs.astral.sh/uv/getting-started/installation/)
+
+## Quick start
 
 ```bash
-make setup
+make setup   # install dependencies, create .env, install pre-commit hooks
+make run     # start postgres, redis, api, and worker
 ```
 
-## Run
+Verify the API:
 
 ```bash
-make run
+curl http://localhost:5000/health
+# {"status":"ok"}
 ```
 
-## Checks
+## Development
+
+After `make setup`, [pre-commit](https://pre-commit.com/) runs automatically on each commit:
+
+- Ruff (lint + format check)
+- mypy
+- pytest
+
+Run the same checks manually:
 
 ```bash
-uv run pre-commit run --all-files
+make check        # lint + test (matches CI)
+make lint         # ruff + mypy only
+make test         # pytest (in-memory SQLite via test fixtures; no Docker required)
+make pre-commit   # all pre-commit hooks
 ```
 
-The API listens on http://127.0.0.1:5000.
+Fix formatting issues:
 
-## Endpoints
+```bash
+uv run ruff format .
+```
 
-| Method | Path | Description  |
-|--------|------|--------------|
-| GET    | `/`  | Health check |
+## CI
+
+GitHub Actions (`.github/workflows/ci.yml`) runs on push and pull requests to `main`, `develop`, and all other branches:
+
+1. Ruff check and format check
+2. mypy
+3. pytest
+
+## Services
+
+| Service | Port | Description |
+|---------|------|-------------|
+| `api` | 5000 | HTTP API |
+| `postgres` | 5432 | Persistent storage |
 
 ## Project layout
 
@@ -38,6 +80,8 @@ app/
   models/           # ORM models
   routes/           # blueprints / endpoints
 run.py              # entrypoint
+Dockerfile
+docker-compose.yml
 pyproject.toml
 uv.lock
 ```

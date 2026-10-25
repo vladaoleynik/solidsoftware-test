@@ -6,4 +6,4 @@ setup:
 	uv run pre-commit install
 
 run:
-	uv run flask run
+	docker compose up --build

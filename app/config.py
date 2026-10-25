@@ -11,6 +11,6 @@ class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key")
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "DATABASE_URL",
-        f"sqlite:///{BASE_DIR / 'instance' / 'app.db'}",
+        "postgresql+psycopg://payments:payments@localhost:5432/payments",
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
