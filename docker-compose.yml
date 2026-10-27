@@ -5,6 +5,8 @@ services:
     build: .
     ports:
       - "8000:8000"
+    volumes:
+      - .:/app
     environment:
       FLASK_APP: run.py
       SECRET_KEY: ${SECRET_KEY:-dev-secret-key}

@@ -9,4 +9,4 @@ run:
 	docker compose up --build
 
 migrate:
-	uv run flask db upgrade
+	docker compose exec app flask db upgrade
