@@ -68,3 +68,26 @@ GitHub Actions (`.github/workflows/ci.yml`) runs on push and pull requests to `m
 |---------|------|-------------|
 | `api` | 8000 | HTTP API |
 | `postgres` | 5432 | Persistent storage |
+
+## Payment Provider Mock
+
+The application uses a mock payment provider (`MockPaymentProvider`) for testing purposes. No real payment gateway integration is required.
+
+**Behavior:**
+- Payment tokens ending with `"fail"` → Payment fails with error "Payment declined by provider"
+- All other tokens → Payment succeeds with a generated transaction ID
+
+**Example usage:**
+```python
+from app.services.payment_provider import MockPaymentProvider
+
+provider = MockPaymentProvider()
+
+# This will succeed
+result = provider.process_payment("tok_valid_card", Decimal("99.99"), "USD")
+# result.success = True, result.transaction_id = "txn_abc123..."
+
+# This will fail
+result = provider.process_payment("tok_card_fail", Decimal("99.99"), "USD")
+# result.success = False, result.error = "Payment declined by provider"
+```
