@@ -1,12 +1,20 @@
+from typing import Any
+
 from flask import Flask
 
 from app.config import Config
 from app.extensions import db, migrate
 
 
-def create_app() -> Flask:
+def create_app(config: type[Config] | dict[str, Any] | None = None) -> Flask:
     app = Flask(__name__)
-    app.config.from_object(Config)
+
+    if config is None:
+        app.config.from_object(Config)
+    elif isinstance(config, dict):
+        app.config.update(config)
+    else:
+        app.config.from_object(config)
 
     db.init_app(app)
     migrate.init_app(app, db)

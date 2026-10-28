@@ -11,11 +11,9 @@ ENV UV_COMPILE_BYTECODE=1 \
     FLASK_APP=run.py
 
 COPY pyproject.toml uv.lock ./
-RUN uv sync --frozen --no-dev --no-install-project
+RUN uv sync --frozen --no-dev
 
 COPY app ./app
-COPY db ./db
-COPY migrations ./migrations
 COPY run.py ./
 COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

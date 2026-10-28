@@ -1,10 +1,11 @@
 #!/bin/sh
 set -e
 
-flask db upgrade
+# Use the virtual environment directly
+/app/.venv/bin/flask db upgrade
 
 if [ "${SEED_DATA:-0}" = "1" ]; then
-  python -m app.seed
+  /app/.venv/bin/python -m app.seed
 fi
 
-exec flask run --host=0.0.0.0 --port=8000
+exec /app/.venv/bin/flask run --host=0.0.0.0 --port=8000

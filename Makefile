@@ -1,4 +1,4 @@
-.PHONY: setup run migrate
+.PHONY: setup run migrate test
 
 setup:
 	uv sync
@@ -10,3 +10,6 @@ run:
 
 migrate:
 	docker compose exec app flask db upgrade
+
+test:
+	uv run pytest
