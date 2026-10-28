@@ -1,5 +1,4 @@
-from __future__ import annotations
-
+import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING
 from uuid import UUID
@@ -19,6 +18,7 @@ class User(Model):
 
     id: Mapped[UUID] = mapped_column(
         primary_key=True,
+        default=uuid.uuid4,
         server_default=text("gen_random_uuid()"),
     )
     email: Mapped[str] = mapped_column(Text, unique=True, nullable=False)
