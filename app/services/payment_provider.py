@@ -13,32 +13,49 @@ class PaymentResult:
 
 class PaymentProvider(Protocol):
     def process_payment(
-        self, provider_token: str, amount: Decimal, currency: str
+        self,
+        provider_token: str,
+        amount: Decimal,
+        currency: str,
     ) -> PaymentResult:
         """Process a payment through the payment provider."""
 
 
 class MockPaymentProvider:
-    """
-    Mock payment provider for testing.
+    """Mock payment provider for testing.
 
     Behavior based on provider_token:
-    - Tokens ending with "fail" will fail
-    - All other tokens will succeed
+    - "pm_mock_success" succeeds
+    - "pm_mock_insufficient_funds" fails with insufficient_funds
+    - "pm_mock_provider_error" fails with provider_error
+    - Any other token fails with unknown_payment_method
     """
 
     def process_payment(
-        self, provider_token: str, amount: Decimal, currency: str
+        self,
+        provider_token: str,
+        amount: Decimal,
+        currency: str,
     ) -> PaymentResult:
-        # Simulate payment failure for tokens ending with "fail"
-        if provider_token.endswith("fail"):
+        if provider_token == "pm_mock_success":
             return PaymentResult(
-                success=False,
-                transaction_id=None,
-                failure_reason="Payment declined by provider",
+                success=True,
+                transaction_id=f"txn_{uuid4().hex[:16]}",
             )
 
-        # Simulate successful payment
+        if provider_token == "pm_mock_insufficient_funds":
+            return PaymentResult(
+                success=False,
+                failure_reason="insufficient_funds",
+            )
+
+        if provider_token == "pm_mock_provider_error":
+            return PaymentResult(
+                success=False,
+                failure_reason="provider_error",
+            )
+
         return PaymentResult(
-            success=True, transaction_id=f"txn_{uuid4().hex[:16]}", failure_reason=None
+            success=False,
+            failure_reason="unknown_payment_method",
         )
