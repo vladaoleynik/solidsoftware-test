@@ -7,6 +7,7 @@ from sqlalchemy import CheckConstraint, DateTime, ForeignKey, Index, Text, func,
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.extensions import Model
+from app.models.enums import CartStatus
 
 if TYPE_CHECKING:
     from app.models.cart_item import CartItem
@@ -32,9 +33,10 @@ class Cart(Model):
         ForeignKey("users.id"),
         nullable=False,
     )
-    status: Mapped[str] = mapped_column(
+    status: Mapped[CartStatus] = mapped_column(
         Text,
         nullable=False,
+        default=CartStatus.ACTIVE,
         server_default=text("'active'"),
     )
     created_at: Mapped[datetime] = mapped_column(

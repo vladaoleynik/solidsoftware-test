@@ -19,9 +19,10 @@ def create_app(config: type[Config] | dict[str, Any] | None = None) -> Flask:
     db.init_app(app)
     migrate.init_app(app, db)
 
-    from app.routes import main_bp
+    from app.routes import main_bp, payments_bp
 
     app.register_blueprint(main_bp)
+    app.register_blueprint(payments_bp)
 
     # Ensure models are imported so metadata is registered with Alembic.
     from app import models  # noqa: F401

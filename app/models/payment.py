@@ -18,6 +18,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.extensions import Model
+from app.models.enums import PaymentStatus
 
 if TYPE_CHECKING:
     from app.models.cart import Cart
@@ -62,9 +63,10 @@ class Payment(Model):
         nullable=False,
         server_default=text("'USD'"),
     )
-    status: Mapped[str] = mapped_column(
+    status: Mapped[PaymentStatus] = mapped_column(
         Text,
         nullable=False,
+        default=PaymentStatus.PENDING,
         server_default=text("'pending'"),
     )
     # External payment provider's transaction ID (e.g., Stripe, PayPal)

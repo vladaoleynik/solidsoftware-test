@@ -1,8 +1,8 @@
 import factory
 
 from app.extensions import db
-from app.models import Cart, Payment, User, UserPaymentMethod
-from app.services.payment_service import CartStatus, PaymentStatus
+from app.models import Cart, CartItem, Payment, Product, User, UserPaymentMethod
+from app.models.enums import CartStatus, PaymentStatus
 
 
 class BaseFactory(factory.alchemy.SQLAlchemyModelFactory):
@@ -36,6 +36,25 @@ class UserPaymentMethodFactory(BaseFactory):
     provider_token = "pm_mock_success"
     last_four = "1234"
     is_default = False
+
+
+class ProductFactory(BaseFactory):
+    class Meta:
+        model = Product
+
+    name = factory.Faker("word")
+    price = factory.Faker("pydecimal", left_digits=2, right_digits=2, positive=True)
+    stock_quantity = 100
+
+
+class CartItemFactory(BaseFactory):
+    class Meta:
+        model = CartItem
+
+    cart = factory.SubFactory(CartFactory)
+    product = factory.SubFactory(ProductFactory)
+    quantity = 1
+    unit_price = factory.SelfAttribute("product.price")
 
 
 class PaymentFactory(BaseFactory):

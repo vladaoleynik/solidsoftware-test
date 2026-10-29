@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import uuid
 from datetime import datetime
 from decimal import Decimal
 from typing import TYPE_CHECKING
@@ -33,6 +34,7 @@ class CartItem(Model):
 
     id: Mapped[UUID] = mapped_column(
         primary_key=True,
+        default=uuid.uuid4,
         server_default=text("gen_random_uuid()"),
     )
     cart_id: Mapped[UUID] = mapped_column(
